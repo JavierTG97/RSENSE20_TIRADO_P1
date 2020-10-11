@@ -69,11 +69,10 @@ void setup() {
 void loop() {
   // Si se recibe un string por la consola nos lo guardamos: 
   if (Serial.available()>0) {
-     comando = Serial.readString();     
+     comando = Serial.readString();   
+     //En funcion del comando elegimos que hacer:
+     ejecutarComando(comando);  
   }
-
-  //En funcion del comando elegimos que hacer:
-  ejecutarComando(comando);
   
   if (interruptCounter > 0) {
 
