@@ -16,12 +16,6 @@ RTC_DATA_ATTR const int ADC_pin = 36;
 int ADC_val;
 float valor_v;
 
-//Interrupción:
-void IRAM_ATTR onTimer() {
-  portENTER_CRITICAL_ISR(&timerMux);
-  interruptCounter++;
-  portEXIT_CRITICAL_ISR(&timerMux); 
-}
 
 void setup() {
   // put your setup code here, to run once:
