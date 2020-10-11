@@ -16,10 +16,9 @@ RTC_DATA_ATTR const int ADC_pin = 36;
 int ADC_val;
 float valor_v;
 
-
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
   delay(1000); //Para que le de tiempo a abrir el puerto serie
 
   //Wake-up source que despierta al ESP32:
@@ -34,11 +33,11 @@ void setup() {
   Serial.flush(); //Esperamos a que la transmisión por puerto serie haya terminado
 
   //Una vez terminada la tarea, mandamos de nuevo al ESP32 a dormir:
+  esp_set_deep_sleep_wake_stub(NULL);
   esp_deep_sleep_start();
 
 }
 
 //El loop nunca se ejecuta (antes de entrar a él, mandamos el ESP32 a dormir)
-void loop() {
-  
+void loop() {  
 }
