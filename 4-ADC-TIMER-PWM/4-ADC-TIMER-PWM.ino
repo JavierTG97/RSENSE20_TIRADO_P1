@@ -48,9 +48,9 @@ void setup() {
   //false -> la " " " nivel (la interrupción se genera  siempre que la señal esté en alto)
   timerAttachInterrupt(timer, &onTimer, true);
 
-  // Aquí definimos que la interrupción se cree cada 10 segundos (al contar hasta 10.000.000 -> con cada conteo realizado en 1 us -> 10 seg.)
-  // true/false -> si queremos que el conteo se renueve (true) o que continue hasta el máximo valor (false)
-  timerAlarmWrite(timer, 10000000, true);
+  // Aqui definimos que INICIALMENTE la interrupcion se cree cada segundo (que cuente hasta 10^6 a 1 MHz -> 1 seg.)
+  // true/false -> si queremos que el conteo se renueve (true) o que continue hasta el maximo valor (false)
+  timerAlarmWrite(timer, 1000000, true);
 
   timerAlarmEnable(timer);
 
@@ -105,7 +105,8 @@ void ejecutarComando(String orden){
   if (orden.substring(0,4) == "ADC(") {
     int tiempo = orden.substring(4,5).toInt(); // en segundos, solo toma valores enteros
     if (tiempo > 0) {
-      timerAlarmWrite(timer, 10000000 * tiempo, true); //cambiamos cuando se produce la interrupción
+      timerAlarmWrite(timer, 1000000 * tiempo, true); //cambiamos cuando se produce la interrupción
+      alarmBool = true;
     }
     else {
       alarmBool = false;
