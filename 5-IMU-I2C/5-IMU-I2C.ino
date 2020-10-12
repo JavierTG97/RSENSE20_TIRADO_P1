@@ -59,7 +59,7 @@ void setup() {
     offsetY = mySensor.accelY();
     aZ = mySensor.accelZ();
   } else {
-    Serial.println("Cannod read accel values");
+    Serial.println("Cannot read accel values");
   }
 
   //En la siguiente líne asumimos que el oofset en el eje Z NO es suficiente como para cambiar el signo en la medición:
@@ -93,20 +93,26 @@ void loop() {
     //Actualizamos el contador (para ver si hemos llegado al segundo):
     ++cont;
     
-    //Leemos address del sensor:
+    //Leemos address del sensor, en caso de que quisieramos lo podemos sacar tambien por la UART:
+    /*
     uint8_t sensorId;
     if (mySensor.readId(&sensorId) == 0) {
       Serial.println("sensorId: " + String(sensorId));
     } 
     else {
       Serial.println("Cannot read sensorId");
-    }
+    }*/
 
-    //Leemos aceleraciones
+    //Leemos aceleraciones y actualizamos los sumatorios:
     if (mySensor.accelUpdate() == 0) {
-      aX = mySensor.accelX(); aXtotal = aXtotal + aX;
-      aY = mySensor.accelY(); aYtotal = aYtotal + aY;
-      aZ = mySensor.accelZ(); aZtotal = aZtotal + aZ;
+      aX = mySensor.accelX(); 
+      aXtotal = aXtotal + aX - offsetX;
+      
+      aY = mySensor.accelY(); 
+      aYtotal = aYtotal + aY - offsetY;
+      
+      aZ = mySensor.accelZ(); 
+      aZtotal = aZtotal + aZ - offsetZ;
       //aSqrt = mySensor.accelSqrt();
     } 
     else {
@@ -122,7 +128,9 @@ void loop() {
       modulo2 = aXtotal*aXtotal + aYtotal*aYtotal, aZtotal*aZtotal;
       Serial.println("Modulo de la aceleracion medio: " + String(sqrt(modulo2)));
       
+      Serial.println("");
       aXtotal = 0.0;  aYtotal = 0.0; aZtotal = 0.0;
+      cont=0;
     }
   }
   
