@@ -1,5 +1,8 @@
 #include <MPU9250_asukiaaa.h>
 
+//LED:
+const int ledPIN = 17;
+
 // IMU:
 #ifdef _ESP32_HAL_I2C_H_
 #define SDA_PIN 21
@@ -77,6 +80,9 @@ void setup() {
   timerAttachInterrupt(timer, &onTimer, true); //Asignamos el timer a la interrip. onTimer, y la interrupción se genera tras producirse el flanco de timer correspondiente. 
   timerAlarmWrite(timer, 200000, true); //Interrupcion = 200.000 conteos (200 ms) e indicamos que cada vez que llegue a ese valor, el conteo se renueve.
   timerAlarmEnable(timer); //activamos la interrupción.
+
+  // SET-UP del LED:
+  pinMode(ledPIN , OUTPUT);
   
 }
 
@@ -119,14 +125,22 @@ void loop() {
       Serial.println("Cannot read accel values");
     }    
 
+    if (cont == 1){
+      digitalWrite(ledPIN , LOW);
+    }
+    
     //Si ha pasado 1 segundo, enviamos la media de las acelarciones durante ese segundo
     if (cont==4) {
       Serial.println("acel_X: " + String(aXtotal/4));
       Serial.println("acel_Y: " + String(aYtotal/4));
       Serial.println("acel_Z: " + String(aZtotal/4));
-            
+      
+      //Calculamos tambien el modulo de la aceleracion:      
       modulo2 = aXtotal*aXtotal + aYtotal*aYtotal, aZtotal*aZtotal;
       Serial.println("Modulo de la aceleracion medio: " + String(sqrt(modulo2)));
+
+      //encendemos el LED:
+      digitalWrite(ledPIN , HIGH);
       
       Serial.println("");
       aXtotal = 0.0;  aYtotal = 0.0; aZtotal = 0.0;
