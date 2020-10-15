@@ -45,6 +45,9 @@ void setup() {
 
   mySensor.beginAccel();
 
+  while (!Serial.available()){
+  }
+  
   Serial.println("");
   Serial.println("---------------- CALIBRACION -----------------");
   Serial.flush();
@@ -78,7 +81,7 @@ void setup() {
   // SET-UP del timer:
   timer = timerBegin(0, 80, true); //Por orden: asociamos el timer al canal 0, prescaler de 80 -> freq=80/80=1 MHz, y el conteo es en sentido ascendente.
   timerAttachInterrupt(timer, &onTimer, true); //Asignamos el timer a la interrip. onTimer, y la interrupción se genera tras producirse el flanco de timer correspondiente. 
-  timerAlarmWrite(timer, 200000, true); //Interrupcion = 200.000 conteos (200 ms) e indicamos que cada vez que llegue a ese valor, el conteo se renueve.
+  timerAlarmWrite(timer, 100000, true); //Interrupcion = 200.000 conteos (100 ms) e indicamos que cada vez que llegue a ese valor, el conteo se renueve.
   timerAlarmEnable(timer); //activamos la interrupción.
 
   // SET-UP del LED:
@@ -130,10 +133,10 @@ void loop() {
     }
     
     //Si ha pasado 1 segundo, enviamos la media de las acelarciones durante ese segundo
-    if (cont==4) {
-      Serial.println("acel_X: " + String(aXtotal/4));
-      Serial.println("acel_Y: " + String(aYtotal/4));
-      Serial.println("acel_Z: " + String(aZtotal/4));
+    if (cont==10) {
+      Serial.println("acel_X: " + String(aXtotal/10));
+      Serial.println("acel_Y: " + String(aYtotal/10));
+      Serial.println("acel_Z: " + String(aZtotal/10));
       
       //Calculamos tambien el modulo de la aceleracion:      
       modulo2 = aXtotal*aXtotal + aYtotal*aYtotal, aZtotal*aZtotal;
