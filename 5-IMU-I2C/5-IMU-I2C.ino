@@ -139,7 +139,7 @@ void loop() {
       Serial.println("acel_Z: " + String(aZtotal/10));
       
       //Calculamos tambien el modulo de la aceleracion:      
-      modulo2 = aXtotal*aXtotal + aYtotal*aYtotal, aZtotal*aZtotal;
+      modulo2 = aXtotal*aXtotal/100.0 + aYtotal*aYtotal/100.0 + aZtotal*aZtotal/100.0;
       Serial.println("Modulo de la aceleracion medio: " + String(sqrt(modulo2)));
 
       //encendemos el LED:
